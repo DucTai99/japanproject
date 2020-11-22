@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.example.japan.adapter.ObjectAdapter;
+import com.example.japan.model.GrammarCall;
 import com.example.japan.model.ObjectGeneral;
 
 import java.util.ArrayList;
@@ -36,4 +37,6 @@ public class Vocabulary extends Fragment {
         listView.setAdapter(objectAdapter);
         return view;
     }
+
+
 }
