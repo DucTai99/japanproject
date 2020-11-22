@@ -18,15 +18,15 @@ public class ObjectAdapter extends BaseAdapter {
     private int layout;
     private List<ObjectGeneral> list;
 
-    public ObjectAdapter(Context contextDelete, int layout, List<ObjectGeneral> lopList) {
+    public ObjectAdapter(Context contextDelete, int layout, List<ObjectGeneral> list) {
         this.context = contextDelete;
         this.layout = layout;
-        this.list = lopList;
+        this.list = list;
     }
 
     @Override
     public int getCount() {
-        return 0;
+        return list.size();
     }
 
     @Override

@@ -5,12 +5,8 @@
     android:layout_height="match_parent"
     tools:context=".Grammar">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ListView
+        android:id="@+id/listView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:textSize="24dp"
-        android:text="Grammar" />
-
+        android:layout_height="match_parent" />
 </RelativeLayout>
