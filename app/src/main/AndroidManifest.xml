@@ -9,9 +9,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.Light">
+        <activity
+            android:name=".SplashScreenStartCourse"
+            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
         <activity android:name=".ContentGrammar"></activity>
         <activity android:name=".Course" />
         <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".SplashScreen"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
