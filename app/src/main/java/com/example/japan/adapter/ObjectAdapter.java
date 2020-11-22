@@ -47,19 +47,21 @@ public class ObjectAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         ViewHolder holder;
-        if(view == null){
-            holder = new ViewHolder();
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(layout,null);
-            holder.textRow = (TextView) view.findViewById(R.id.title);
-            holder.img = (ImageView) view.findViewById(R.id.iconObject);
-            view.setTag(holder);
+            if(view == null){
+                holder = new ViewHolder();
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                view = inflater.inflate(layout,null);
+
+                holder.textRow = (TextView) view.findViewById(R.id.title);
+                holder.img = (ImageView) view.findViewById(R.id.iconObject);
+                view.setTag(holder);
         }
         else {
             holder = (ViewHolder) view.getTag();
         }
         final ObjectGeneral objectGeneral = list.get(i);
         holder.textRow.setText(objectGeneral.getName());
+
 
         return view;
     }
