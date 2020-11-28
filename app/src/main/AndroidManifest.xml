@@ -9,11 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.Light">
+        <activity android:name=".Lesson"></activity>
         <activity
             android:name=".SplashScreenStartCourse"
-            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
-        <activity android:name=".ContentGrammar"></activity>
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity android:name=".ContentGrammar" />
         <activity android:name=".Course" />
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
