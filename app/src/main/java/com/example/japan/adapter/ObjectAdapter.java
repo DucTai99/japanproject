@@ -39,12 +39,12 @@ public class ObjectAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int i) {
-        return null;
+        return list.get(i);
     }
 
     @Override
     public long getItemId(int i) {
-        return 0;
+        return i;
     }
 
     private class ViewHolder{
@@ -58,8 +58,9 @@ public class ObjectAdapter extends BaseAdapter {
         ViewHolder holder;
             if(view == null){
                 holder = new ViewHolder();
-                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                view = inflater.inflate(layout,null);
+                view = LayoutInflater.from(context).inflate(layout, viewGroup,false);
+//                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//                view = inflater.inflate(layout,null);
 
                 holder.textRow = (TextView) view.findViewById(R.id.title);
                 holder.img = (ImageView) view.findViewById(R.id.iconObject);
@@ -71,14 +72,15 @@ public class ObjectAdapter extends BaseAdapter {
         }
         final ObjectGeneral objectGeneral = list.get(i);
         holder.textRow.setText(objectGeneral.getName());
-//        Log.d("aaa","event");
-//        grammarCall.call(objectGeneral.getId());
-//        holder.img.setOnClickListener(new View.OnClickListener() {
+//        holder.tableRow.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
-//
+//                        Log.d("aaa","event");
+//                ((Grammar) context).showContentGrammar(objectGeneral.getId());
 //            }
 //        });
+//        grammarCall.call(objectGeneral.getId());
+
 
         return view;
     }

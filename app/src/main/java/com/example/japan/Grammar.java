@@ -10,13 +10,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.japan.adapter.ObjectAdapter;
 import com.example.japan.model.GrammarCall;
 import com.example.japan.model.ObjectGeneral;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,56 +36,94 @@ import java.util.concurrent.atomic.AtomicReference;
 public class Grammar extends Fragment{
     ListView listView;
     ObjectAdapter adapter;
+    String url = "https://apijapanese.herokuapp.com/api/vocabulary";
     List<ObjectGeneral> listGrammar;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_grammar, container, false);
         listView = (ListView) view.findViewById(R.id.listView);
-        loadDataBase();
-        adapter = new ObjectAdapter(getActivity(),R.layout.row,listGrammar);
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                showContentGrammar(i);
-            }
-        });
+        getDataAndCreateView(url);
+//        loadDataBase();
+
+//        adapter = new ObjectAdapter(getActivity(),R.layout.row,listGrammar);
+//        listView.setAdapter(adapter);
+//
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//
+//                showContentGrammar(i+1);
+//            }
+//        });
 
         return view;
     }
 
 
-    public void loadDataBase(){
-        listGrammar = new ArrayList<ObjectGeneral>();
-        listGrammar.add(new ObjectGeneral(1,"Bai 1","qwertyui"));
-        listGrammar.add(new ObjectGeneral(2,"Bai 2","qwertyui"));
-        listGrammar.add(new ObjectGeneral(3,"Bai 3","qwertyui"));
-        listGrammar.add(new ObjectGeneral(4,"Bai 4","qwertyui"));
-        listGrammar.add(new ObjectGeneral(5,"Bai 5","qwertyui"));
-    }
-
-    public ObjectGeneral findObject(int id){
-        loadDataBase();
-        for ( ObjectGeneral object:
-             listGrammar) {
-            if(object.getId() == id){
-                return object;
-            }
-        }
-        return null;
-    }
+//    public void loadDataBase(){
+//
+//
+//    }
+//
+//    public ObjectGeneral findObject(int id){
+//        loadDataBase();
+//        for ( ObjectGeneral object:
+//             listGrammar) {
+//            if(object.getId() == id){
+//                return object;
+//            }
+//        }
+//        return null;
+//    }
 
 
     public void showContentGrammar(int id){
         Intent intent = new Intent(getActivity(),ContentGrammar.class);
-        Bundle bundle = new Bundle();
-        ObjectGeneral objectGeneral = findObject(id);
-        Log.d("aaa", objectGeneral.toString());
-        bundle.putSerializable("object",objectGeneral);
-        intent.putExtra("objectGrammar",bundle);
+//        Bundle bundle = new Bundle();
+//        ObjectGeneral objectGeneral = findObject(id);
+//        Log.d("aaa", objectGeneral.toString());
+//        bundle.putSerializable("object",objectGeneral);
+        intent.putExtra("idGrammar",id);
 
         startActivity(intent);
+    }
+
+    private void getDataAndCreateView(String url){
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        listGrammar = new ArrayList<ObjectGeneral>();
+                        for (int i = 0; i < response.length();i++){
+                            try {
+                                JSONObject jsonObject = response.getJSONObject(i);
+                                listGrammar.add(new ObjectGeneral(jsonObject.getInt("id"),jsonObject.getString("name"),""));
+                            }
+                            catch (JSONException ex){
+                                ex.printStackTrace();
+                            }
+                        }
+                        adapter = new ObjectAdapter(getActivity(),R.layout.row,listGrammar);
+                        listView.setAdapter(adapter);
+
+                        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                                showContentGrammar(i+1);
+                            }
+                        });
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("AAAA","loi r");
+            }
+        }
+        );
+        requestQueue.add(jsonArrayRequest);
     }
 
 }
