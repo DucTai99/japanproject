@@ -44,48 +44,12 @@ public class Grammar extends Fragment{
         View view = inflater.inflate(R.layout.fragment_grammar, container, false);
         listView = (ListView) view.findViewById(R.id.listView);
         getDataAndCreateView(url);
-//        loadDataBase();
-
-//        adapter = new ObjectAdapter(getActivity(),R.layout.row,listGrammar);
-//        listView.setAdapter(adapter);
-//
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//
-//                showContentGrammar(i+1);
-//            }
-//        });
-
         return view;
     }
 
-
-//    public void loadDataBase(){
-//
-//
-//    }
-//
-//    public ObjectGeneral findObject(int id){
-//        loadDataBase();
-//        for ( ObjectGeneral object:
-//             listGrammar) {
-//            if(object.getId() == id){
-//                return object;
-//            }
-//        }
-//        return null;
-//    }
-
-
     public void showContentGrammar(int id){
         Intent intent = new Intent(getActivity(),ContentGrammar.class);
-//        Bundle bundle = new Bundle();
-//        ObjectGeneral objectGeneral = findObject(id);
-//        Log.d("aaa", objectGeneral.toString());
-//        bundle.putSerializable("object",objectGeneral);
         intent.putExtra("idGrammar",id);
-
         startActivity(intent);
     }
 

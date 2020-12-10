@@ -5,12 +5,9 @@
     android:layout_height="match_parent"
     tools:context=".Handbook">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:gravity="center"
-        android:textSize="24dp"
+    <com.baoyz.swipemenulistview.SwipeMenuListView
+        android:id="@+id/listView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Handbook" />
+        android:layout_height="match_parent" />
 
 </RelativeLayout>
