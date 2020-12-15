@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
@@ -21,40 +24,47 @@ import com.example.japan.model.ObjectGeneral;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class ContentGrammar extends AppCompatActivity {
-    TextView textView;
+    WebView webView;
     ObjectGeneral objectGeneral;
-    String url = "https://apijapanese.herokuapp.com/api/vocabulary/";
+    String url = "";
+    String html;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_content_grammar);
-        textView = (TextView) findViewById(R.id.textContentGrammar);
+        webView = (WebView) findViewById(R.id.webView);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.setHorizontalScrollBarEnabled(false);
+        webView.setWebViewClient(new WebViewClient());
         Intent intent = getIntent();
         if(intent != null){
-            int idGrammar = intent.getIntExtra("idGrammar",-1);
-            url+=idGrammar;
-            getData(url);
-        }
-    }
-    private void getData(String url){
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        textView.setText(response.toString());
+            url = intent.getStringExtra("urlGrammar");
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Document doc = Jsoup.connect(url).timeout(6000).get();
+                        Elements ele = doc.select(".entry-content");
+                        html = ele.toString();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("AAAA","loi r");
-            }
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            webView.loadData(html, "text/html", "utf-8");
+                        }
+                    });
+                }
+            }).start();
         }
-        );
-        requestQueue.add(jsonArrayRequest);
     }
 }

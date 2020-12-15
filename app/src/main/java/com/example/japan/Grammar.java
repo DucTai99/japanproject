@@ -36,7 +36,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class Grammar extends Fragment{
     ListView listView;
     ObjectAdapter adapter;
-    String url = "https://apijapanese.herokuapp.com/api/vocabulary";
+    String url = "https://apijapanese.herokuapp.com/api/grammar";
     List<ObjectGeneral> listGrammar;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,9 +47,9 @@ public class Grammar extends Fragment{
         return view;
     }
 
-    public void showContentGrammar(int id){
+    public void showContentGrammar(String url){
         Intent intent = new Intent(getActivity(),ContentGrammar.class);
-        intent.putExtra("idGrammar",id);
+        intent.putExtra("urlGrammar",url);
         startActivity(intent);
     }
 
@@ -63,7 +63,7 @@ public class Grammar extends Fragment{
                         for (int i = 0; i < response.length();i++){
                             try {
                                 JSONObject jsonObject = response.getJSONObject(i);
-                                listGrammar.add(new ObjectGeneral(jsonObject.getInt("id"),jsonObject.getString("name"),""));
+                                listGrammar.add(new ObjectGeneral(jsonObject.getInt("id"),jsonObject.getString("name"),jsonObject.getString("url")));
                             }
                             catch (JSONException ex){
                                 ex.printStackTrace();
@@ -75,8 +75,7 @@ public class Grammar extends Fragment{
                         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                                showContentGrammar(i+1);
+                                showContentGrammar(listGrammar.get(i).getContent());
                             }
                         });
                     }
