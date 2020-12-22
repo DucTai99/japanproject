@@ -18,7 +18,7 @@ public class SplashScreenStartCourse extends AppCompatActivity {
     Handler handler;
     TextView maxim_Content;
     ImageView iconView;
-
+    int idCourse = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,10 +29,15 @@ public class SplashScreenStartCourse extends AppCompatActivity {
         runAnimation(iconView);
         maxim_Content.setText(randomMaxim());
         handler = new Handler();
+        Intent intent = getIntent();
+        if(intent != null){
+            idCourse = intent.getIntExtra("idCourse",0);
+        }
         final Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 Intent intent = new Intent(SplashScreenStartCourse.this, Course.class);
+                intent.putExtra("idCourse",idCourse);
                 startActivity(intent);
                 finish();
             }

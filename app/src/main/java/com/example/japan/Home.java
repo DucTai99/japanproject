@@ -3,100 +3,84 @@ package com.example.japan;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.japan.adapter.CourseAdapter;
+import com.example.japan.adapter.ObjectAdapter;
+import com.example.japan.model.ObjectGeneral;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Home extends Fragment {
-    private LinearLayout linearLayout;
-    private CardView card_basic1, card_basic2, card_food, card_sport, card_family, card_color;
+    RecyclerView mRecyclerView;
+    List<ObjectGeneral> list;
+    String url = "https://apijapanese.herokuapp.com/api/course";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_home, container, false);
-
-        //
-        card_basic1 = view.findViewById(R.id.basic1_course);
-        card_basic2 = view.findViewById(R.id.basic2_course);
-        card_food = view.findViewById(R.id.food_course);
-        card_sport = view.findViewById(R.id.sport_course);
-        card_family = view.findViewById(R.id.family_course);
-        card_color = view.findViewById(R.id.color_course);
-
-        card_basic1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDialog();
-
-            }
-        });
-
-        card_basic2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDialog();
-            }
-        });
-
-        card_food.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDialog();
-            }
-        });
-
-        card_sport.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDialog();
-            }
-        });
-
-        card_family.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDialog();
-            }
-        });
-
-        card_color.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDialog();
-            }
-        });
+        mRecyclerView = view.findViewById(R.id.recyclerview);
+        GridLayoutManager mGridLayoutManager = new GridLayoutManager(getContext(), 2);
+        mRecyclerView.setLayoutManager(mGridLayoutManager);
+        getDataAndCreateView(url);
         return view;
     }
-    public void showDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Cấp độ cơ bản1").setNegativeButton("BẮT ĐẦU", new DialogInterface.OnClickListener() {
+
+    private void getDataAndCreateView(String url){
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        list = new ArrayList<ObjectGeneral>();
+                        for (int i = 0; i < response.length();i++){
+                            try {
+                                JSONObject jsonObject = response.getJSONObject(i);
+                                list.add(new ObjectGeneral(jsonObject.getInt("id"),jsonObject.getString("name"),"",R.drawable.family));
+                            }
+                            catch (JSONException ex){
+                                ex.printStackTrace();
+                            }
+                        }
+                        CourseAdapter adapter = new CourseAdapter(getContext(),list);
+                        mRecyclerView.setAdapter(adapter);
+                    }
+                }, new Response.ErrorListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-                Intent intent = new Intent(getActivity(), SplashScreenStartCourse.class);
-                startActivity(intent);
-
+            public void onErrorResponse(VolleyError error) {
+                Log.d("AAAA","loi r");
             }
-        });
-
-        AlertDialog alertDialog = builder.create();
-        alertDialog.getWindow().setBackgroundDrawableResource(R.color.dark);
-        alertDialog.show();
-        alertDialog.getWindow().setLayout(1000,350);
-        //
-        Button button = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
-        button.setMinWidth(1000);
-        button.setBackgroundResource(R.drawable.button_design);
-
+        }
+        );
+        requestQueue.add(jsonArrayRequest);
     }
+
 
 
 
