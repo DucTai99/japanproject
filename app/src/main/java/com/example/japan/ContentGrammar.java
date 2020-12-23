@@ -35,7 +35,7 @@ public class ContentGrammar extends AppCompatActivity {
     WebView webView;
     ObjectGeneral objectGeneral;
     String url = "";
-    String html;
+    String html = "<p>a</p>";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,13 +54,14 @@ public class ContentGrammar extends AppCompatActivity {
                         Document doc = Jsoup.connect(url).timeout(6000).get();
                         Elements ele = doc.select(".entry-content");
                         html = ele.toString();
+                        Log.d("aaa",html);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            webView.loadData(html, "text/html", "utf-8");
+                            webView.loadDataWithBaseURL(null,html, "text/html", "utf-8",null);
                         }
                     });
                 }

@@ -33,7 +33,7 @@ public class fragment_home_learn_op1 extends Fragment {
     ArrayList<Integer> listImg;
     ArrayList<ImageView> listImageView;
     ArrayList<CardView> listCardView;
-    int viTri, idQuestion,resultFromUser;
+    int viTri, idQuestion,resultFromUser = -1;
     int old = -1;
     View view;
     @Override
@@ -62,18 +62,20 @@ public class fragment_home_learn_op1 extends Fragment {
             String imgWord = bundle.getString("imgWord");
             int img = getContext().getResources().getIdentifier("drawable/"+imgWord, null, getContext().getPackageName());
             listImageView.get(viTri).setImageResource(img);
-            listImageView.remove(viTri);
             for (int i = 0 ; i < listImg.size();i++){
                 if(listImg.get(i) == img){
                     listImg.remove(i);
                     break;
                 }
             }
-            for (ImageView imageView : listImageView){
+            for(int i = 0;i<listImageView.size();i++){
                 int rdImg = random.nextInt(listImg.size());
-                imageView.setImageResource(listImg.get(rdImg));
-                listImg.remove(rdImg);
+                if(i != viTri){
+                    listImageView.get(i).setImageResource(listImg.get(rdImg));
+                    listImg.remove(rdImg);
+                }
             }
+            listImg.clear();
             for (int i = 0; i< listCardView.size(); i++){
                 int finalI = i;
                 listCardView.get(i).setOnClickListener(new View.OnClickListener() {
@@ -91,6 +93,7 @@ public class fragment_home_learn_op1 extends Fragment {
             btnCheck.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
                     boolean checkResult = checkResult(resultFromUser,viTri);
                     ((Course) getActivity()).showDialog(checkResult);
                     if(checkResult){
@@ -151,7 +154,7 @@ public class fragment_home_learn_op1 extends Fragment {
     }
 
     public boolean checkResult(int result, int viTri){
-        if(result == viTri){
+        if(result == viTri && result != -1){
             return true;
         }
         return false;

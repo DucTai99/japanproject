@@ -74,12 +74,16 @@ public class fragment_home_learn_op2 extends Fragment {
             wordWrongList.add(word);
         }
         Random random = new Random();
-        ArrayList<String> temp = (ArrayList<String>) allWordWithoutRightAnswer.clone();
+//        ArrayList<String> temp = (ArrayList<String>) allWordWithoutRightAnswer.clone();
         for(int i =0;i<3;i++){
-            int rd = random.nextInt(temp.size());
-            wordWrongList.add(temp.get(rd));
-            temp.remove(rd);
+//            int rd = random.nextInt(temp.size());
+//            wordWrongList.add(temp.get(rd));
+//            temp.remove(rd);
+            int rd = random.nextInt(allWordWithoutRightAnswer.size());
+            wordWrongList.add(allWordWithoutRightAnswer.get(rd));
+            allWordWithoutRightAnswer.remove(rd);
         }
+        allWordWithoutRightAnswer.clear();
         mixList();
     }
 
@@ -90,6 +94,7 @@ public class fragment_home_learn_op2 extends Fragment {
                 allWordWithoutRightAnswer.add(s);
             }
         }
+        allWord.clear();
     }
 
     public void mixList(){
@@ -156,6 +161,7 @@ public class fragment_home_learn_op2 extends Fragment {
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
                 }
+
             }
         });
     }
