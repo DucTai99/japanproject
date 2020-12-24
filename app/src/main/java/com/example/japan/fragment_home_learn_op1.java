@@ -33,8 +33,7 @@ public class fragment_home_learn_op1 extends Fragment {
     ArrayList<Integer> listImg;
     ArrayList<ImageView> listImageView;
     ArrayList<CardView> listCardView;
-    int viTri, idQuestion,resultFromUser = -1;
-    int old = -1;
+    int viTri, idQuestion,resultFromUser = -1,old = -1;
     View view;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -93,10 +92,11 @@ public class fragment_home_learn_op1 extends Fragment {
             btnCheck.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     boolean checkResult = checkResult(resultFromUser,viTri);
                     ((Course) getActivity()).showDialog(checkResult);
                     if(checkResult){
+                        listCardView.clear();
+                        listImageView.clear();
                         ((Course)getActivity()).increaseProgressBar();
                         ((Course) getActivity()).removeRightQuestion(idQuestion);
                     }
@@ -107,8 +107,9 @@ public class fragment_home_learn_op1 extends Fragment {
                         fragment.setArguments(bundle);
                         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                        fragmentTransaction.replace(R.id.frame_course, fragment);
-                        fragmentTransaction.addToBackStack(null);
+                        Fragment fragment2 = fragmentManager.findFragmentById(R.id.frame_course);
+                        fragmentTransaction.remove(fragment2);
+                        fragmentTransaction.add(R.id.frame_course, fragment);
                         fragmentTransaction.commit();
                     }
                 }

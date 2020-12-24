@@ -19,6 +19,8 @@ import com.example.japan.adapter.QuestionAdapter;
 import com.example.japan.model.QuestionCourse;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -74,17 +76,16 @@ public class fragment_home_learn_op2 extends Fragment {
             wordWrongList.add(word);
         }
         Random random = new Random();
-//        ArrayList<String> temp = (ArrayList<String>) allWordWithoutRightAnswer.clone();
-        for(int i =0;i<3;i++){
-//            int rd = random.nextInt(temp.size());
-//            wordWrongList.add(temp.get(rd));
-//            temp.remove(rd);
+        int n = 0;
+        while (n < 3){
             int rd = random.nextInt(allWordWithoutRightAnswer.size());
-            wordWrongList.add(allWordWithoutRightAnswer.get(rd));
-            allWordWithoutRightAnswer.remove(rd);
+            if(!wordWrongList.contains(allWordWithoutRightAnswer.get(rd))){
+                wordWrongList.add(allWordWithoutRightAnswer.get(rd));
+                n++;
+            }
         }
+        Collections.shuffle(wordWrongList);
         allWordWithoutRightAnswer.clear();
-        mixList();
     }
 
     public void getAllListWithoutRightAnswer(){
@@ -97,18 +98,6 @@ public class fragment_home_learn_op2 extends Fragment {
         allWord.clear();
     }
 
-    public void mixList(){
-        ArrayList<String> newList = new ArrayList<String>(wordWrongList);
-        Random rand = new Random();
-        for (int i = 0; i < newList.size(); i++) {
-            int newPos = rand.nextInt(newList.size());
-            while (newPos == i||newList.get(newPos)==null) {
-                newPos = rand.nextInt(wordWrongList.size());
-            }
-            wordWrongList.set(i, newList.get(newPos));
-            newList.set(newPos,null);
-        }
-    }
     public void anhxa(){
         txtQuestion2 = view.findViewById(R.id.txtQuestion2);
         btnCheck2 = view.findViewById(R.id.btnCheck2);
@@ -124,7 +113,6 @@ public class fragment_home_learn_op2 extends Fragment {
     public void sendResult(String answer,CardView cardView){
         contentAnswerList.add(answer);
         cardViewsListFromQuestionAdapter.put(answer,cardView);
-
         AnswerAdapter adapter2 = new AnswerAdapter(this, contentAnswerList);
         recyclerViewAnswer1.setAdapter(adapter2);
     }
@@ -147,6 +135,10 @@ public class fragment_home_learn_op2 extends Fragment {
                 boolean checkReuslt = contentAnswerList.equals(wordCorrectList);
                 ((Course) getActivity()).showDialog(checkReuslt);
                 if(checkReuslt){
+                    wordCorrectList.clear();
+                    wordWrongList.clear();
+                    contentAnswerList.clear();
+                    cardViewsListFromQuestionAdapter.clear();
                     ((Course)getActivity()).increaseProgressBar();
                     ((Course) getActivity()).removeRightQuestion(idQuestion);
                 }
@@ -157,11 +149,11 @@ public class fragment_home_learn_op2 extends Fragment {
                     fragment.setArguments(bundle);
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.frame_course, fragment);
-                    fragmentTransaction.addToBackStack(null);
+                    Fragment fragment2 = fragmentManager.findFragmentById(R.id.frame_course);
+                    fragmentTransaction.remove(fragment2);
+                    fragmentTransaction.add(R.id.frame_course, fragment);
                     fragmentTransaction.commit();
                 }
-
             }
         });
     }

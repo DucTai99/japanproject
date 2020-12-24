@@ -85,12 +85,20 @@ public class Course extends AppCompatActivity {
                         Fragment fragment = setFragment(questionCourse.getType());
                         Bundle bundle = createBundleToPass(questionCourse.getId(),questionCourse.getjWord(),questionCourse.getVnWord(),questionCourse.getImgWord());
                         fragment.setArguments(bundle);
-                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_course,fragment).commit();
+                        FragmentManager fragmentManager = getSupportFragmentManager();
+                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        Fragment fragment2 = fragmentManager.findFragmentById(R.id.frame_course);
+                        if(fragment2 != null){
+                            fragmentTransaction.remove(fragment2);
+                        }
+                        fragmentTransaction.add(R.id.frame_course, fragment);
+                        fragmentTransaction.commit();
+//                        getSupportFragmentManager().beginTransaction().add(R.id.frame_course,fragment).commit();
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("AAAA","loi r");
+                Log.d("AAAA","loi r ben Course");
             }
         }
         );
@@ -186,5 +194,29 @@ public class Course extends AppCompatActivity {
             }
         });
         handler.postDelayed(runnable, 1000);
+    }
+
+    @Override
+    public void onBackPressed() {
+        showDialogBackPress();
+    }
+
+    public void showDialogBackPress(){
+        AlertDialog.Builder aBuilder = new AlertDialog.Builder(this);
+        aBuilder.setTitle("Thông báo!");
+        aBuilder.setMessage("Bạn có muốn thoát khỏi quá trình làm?");
+        aBuilder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent intent = new Intent(Course.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+        aBuilder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+        aBuilder.show();
     }
 }
