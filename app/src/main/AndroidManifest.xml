@@ -9,9 +9,9 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
         android:theme="@style/Theme.Design.Light">
-        <activity android:name=".ContentHandbook"></activity>
+        <activity android:name=".ContentSearch"></activity>
+        <activity android:name=".ContentHandbook" />
         <activity android:name=".FinishCourse" />
         <activity android:name=".Lesson" />
         <activity
