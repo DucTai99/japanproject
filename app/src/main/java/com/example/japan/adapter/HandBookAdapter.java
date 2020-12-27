@@ -10,16 +10,16 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.example.japan.R;
-import com.example.japan.model.ObjectGeneral;
+import com.example.japan.model.HandBook;
 
 import java.util.List;
 
-public class ObjectAdapter extends BaseAdapter {
+public class HandBookAdapter extends BaseAdapter {
     public Context context;
     private int layout;
-    private List<ObjectGeneral> list;
+    private List<HandBook> list;
 
-    public ObjectAdapter(Context context, int layout, List<ObjectGeneral> list) {
+    public HandBookAdapter(Context context, int layout, List<HandBook> list) {
 
         this.context = context;
         this.layout = layout;
@@ -44,28 +44,30 @@ public class ObjectAdapter extends BaseAdapter {
     private class ViewHolder{
         TableRow tableRow;
         TextView textRow;
+        TextView dateRow;
         ImageView img;
+
     }
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        ViewHolder holder;
-            if(view == null){
-                holder = new ViewHolder();
-                view = LayoutInflater.from(context).inflate(layout, viewGroup,false);
-//                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//                view = inflater.inflate(layout,null);
+        HandBookAdapter.ViewHolder holder;
+        if(view == null){
+            holder = new HandBookAdapter.ViewHolder();
+            view = LayoutInflater.from(context).inflate(layout, viewGroup,false);
 
-                holder.textRow = (TextView) view.findViewById(R.id.title);
-                holder.img = (ImageView) view.findViewById(R.id.iconObject);
-                holder.tableRow = (TableRow) view.findViewById(R.id.tableRowId);
-                view.setTag(holder);
+            holder.textRow = (TextView) view.findViewById(R.id.title);
+            holder.dateRow = (TextView) view.findViewById(R.id.dateCreate);
+            holder.img = (ImageView) view.findViewById(R.id.iconObject);
+            holder.tableRow = (TableRow) view.findViewById(R.id.tableRowId);
+            view.setTag(holder);
         }
         else {
-            holder = (ViewHolder) view.getTag();
+            holder = (HandBookAdapter.ViewHolder) view.getTag();
         }
-        final ObjectGeneral objectGeneral = list.get(i);
-        holder.textRow.setText(objectGeneral.getName());
+        final HandBook handBook = list.get(i);
+        holder.textRow.setText(handBook.getName());
+        holder.dateRow.setText(handBook.getDataCreate());
 //        holder.tableRow.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {

@@ -42,7 +42,8 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull CourseViewHolder holder, int position) {
-        holder.imageView.setImageResource(list.get(position).getSrcImg());
+        int img = context.getResources().getIdentifier("drawable/"+list.get(position).getSrcImg(), null, context.getPackageName());
+        holder.imageView.setImageResource(img);
         holder.textView.setText(list.get(position).getName());
         holder.mCardView.setOnClickListener(new View.OnClickListener() {
             @Override

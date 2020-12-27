@@ -62,7 +62,7 @@ public class Home extends Fragment {
                         for (int i = 0; i < response.length();i++){
                             try {
                                 JSONObject jsonObject = response.getJSONObject(i);
-                                list.add(new ObjectGeneral(jsonObject.getInt("id"),jsonObject.getString("name"),"",R.drawable.family));
+                                list.add(new ObjectGeneral(jsonObject.getInt("id"),jsonObject.getString("name"),"",jsonObject.getString("img")));
                             }
                             catch (JSONException ex){
                                 ex.printStackTrace();
@@ -80,8 +80,4 @@ public class Home extends Fragment {
         );
         requestQueue.add(jsonArrayRequest);
     }
-
-
-
-
 }

@@ -6,27 +6,27 @@ public class ObjectGeneral implements Serializable {
     private int id;
     private String name;
     private String content;
-    private int srcImg;
+    private String srcImg;
 
     public ObjectGeneral(int id, String name, String content) {
         this.id = id;
         this.name = name;
         this.content = content;
-        this.srcImg = 0;
+        this.srcImg = "";
     }
 
-    public ObjectGeneral(int id, String name, String content, int srcImg) {
+    public ObjectGeneral(int id, String name, String content, String srcImg) {
         this.id = id;
         this.name = name;
         this.content = content;
         this.srcImg = srcImg;
     }
 
-    public int getSrcImg() {
+    public String getSrcImg() {
         return srcImg;
     }
 
-    public void setSrcImg(int srcImg) {
+    public void setSrcImg(String srcImg) {
         this.srcImg = srcImg;
     }
 
