@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
@@ -15,13 +16,11 @@ import java.util.ArrayList;
 
 public class DatabaseManager extends SQLiteOpenHelper {
     private Context context;
-    private String DBName ="handbook";
+    private String DBName ="handbookversion2";
 
     public DatabaseManager(Context context) {
-        super(context,"handbook",null,1);
+        super(context,"handbookversion2",null,1);
         this.context = context;
-        doCreateHandbookTable();
-        doCreateContentHandbookTable();
     }
 
     public DatabaseManager(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
@@ -39,13 +38,25 @@ public class DatabaseManager extends SQLiteOpenHelper {
     }
     public void QueryData(String sql){
         SQLiteDatabase database = getWritableDatabase();
+
         database.execSQL(sql);
     }
+
+    public void createTable(){
+        doCreateHandbookTable();
+        doCreateContentHandbookTable();
+    }
+
 
     public Cursor GetData(String sql){
         SQLiteDatabase database = getReadableDatabase();
         return database.rawQuery(sql,null);
     }
+    public void deleteTable(String name) {
+        String sql="DELETE TABLE "+"'"+name+"'";
+        QueryData(sql);
+    }
+
 
     public void doCreateHandbookTable(){
         String sql = "CREATE TABLE IF NOT EXISTS tblhandbook(";
@@ -54,13 +65,17 @@ public class DatabaseManager extends SQLiteOpenHelper {
         sql += " datecreate TEXT)";
         QueryData(sql);
     }
-
+    public void dropTable(String tableName){
+        String sql = "DROP TABLE " + tableName;
+        QueryData(sql);
+    }
     public void doCreateContentHandbookTable(){
         String sql = "CREATE TABLE IF NOT EXISTS tblcontenthandbook(";
         sql += " id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,";
         sql += " jword TEXT,";
         sql += " vnword TEXT,";
         sql += " type TEXT,";
+        sql += " imgword TEXT,";
         sql += " datecreate TEXT,";
         sql += " idhandbook INT NOT NULL CONSTRAINT id REFERENCES tblhandbook(id) ON DELETE CASCADE)";
         QueryData(sql);
@@ -69,12 +84,14 @@ public class DatabaseManager extends SQLiteOpenHelper {
     public ArrayList<HandBook> getDataHandBook(){
         Cursor data = GetData("SELECT * FROM tblhandbook");
         ArrayList<HandBook> list  = new ArrayList<HandBook>();
+
         while (data.moveToNext()){
             int id = data.getInt(0);
             String name = data.getString(1);
             String dateCreate = data.getString(2);
             list.add(new HandBook(id,name,dateCreate));
         }
+        System.out.println(list.size()+"Size");
         return list;
     }
 
@@ -112,9 +129,10 @@ public class DatabaseManager extends SQLiteOpenHelper {
             String jWord = data.getString(1);
             String vnWord = data.getString(2);
             String type = data.getString(3);
-            String dateCreate = data.getString(4);
-            int idHandBook = data.getInt(5);
-            listContent.add(new VocabularyHandBook(id,jWord,vnWord,type,dateCreate,idHandBook));
+            String imgWord = data.getString(4);
+            String dateCreate = data.getString(5);
+            int idHandBook = data.getInt(6);
+            listContent.add(new VocabularyHandBook(id,jWord,vnWord,type,imgWord,dateCreate,idHandBook));
         }
         return listContent;
     }
@@ -127,8 +145,9 @@ public class DatabaseManager extends SQLiteOpenHelper {
         vocabularyHandBook.setjWord(data.getString(1));
         vocabularyHandBook.setVnWord(data.getString(2));
         vocabularyHandBook.setType(data.getString(3));
-        vocabularyHandBook.setDateCreate(data.getString(4));
-        vocabularyHandBook.setIdHandBook(data.getInt(5));
+        vocabularyHandBook.setImgWord(data.getString(4));
+        vocabularyHandBook.setDateCreate(data.getString(5));
+        vocabularyHandBook.setIdHandBook(data.getInt(6));
         return vocabularyHandBook;
     }
 
@@ -140,21 +159,26 @@ public class DatabaseManager extends SQLiteOpenHelper {
             String jWord = data.getString(1);
             String vnWord = data.getString(2);
             String type = data.getString(3);
-            String dateCreate = data.getString(4);
-            list.add(new VocabularyHandBook(id,jWord,vnWord,type,dateCreate,idHandBook));
+
+
+            String imgWord = data.getString(4);
+            String dateCreate = data.getString(5);
+            list.add(new VocabularyHandBook(id,jWord,vnWord,type,imgWord,dateCreate,idHandBook));
         }
         return list;
     }
 
-    public void insertRowContentHandBook(String jWord,String vnWord, String type, String dateCreate, int idHandBook){
-        String sql = "INSERT INTO tblcontenthandbook (jword,vnword,type,datecreate,idhandbook) VALUES" +
-                " ('" + jWord + "','" + vnWord +"','"+ type+"','"+dateCreate +"',"+idHandBook +")";
+
+
+    public void insertRowContentHandBook(String jWord,String vnWord,String imgWord, String type, String dateCreate, int idHandBook){
+        String sql = "INSERT INTO tblcontenthandbook(jword,vnword,type,imgword,datecreate,idhandbook) VALUES" +
+                " ('" + jWord + "','" + vnWord +"','"+type+"','"+ imgWord+"','" +dateCreate +"',"+idHandBook +")";
         QueryData(sql);
     }
 
-    public void updateRowContentHandBook(int id,String jWord,String vnWord, String type, String dateCreate, int idHandBook){
+    public void updateRowContentHandBook(int id,String jWord,String vnWord, String type,String imgWord, String dateCreate, int idHandBook){
         String sql = "UPDATE tblcontenthandbook SET " +
-                "jword = '"+jWord+"', vnword = '"+ vnWord+"', type = '"+type+"', datecreate = '"
+                "jword = '"+jWord+"', vnword = '"+ vnWord+"', type = '"+type+ "', imgword = '"+ imgWord +"', datecreate = '"
                 + dateCreate +"', idhandbook = " + idHandBook  +" WHERE id ="+id;
         QueryData(sql);
     }
@@ -162,5 +186,26 @@ public class DatabaseManager extends SQLiteOpenHelper {
     public void deleteRowContentHandBook(int id){
         String sql = "DELETE FROM tblcontenthandbook WHERE id = " + id;
         QueryData(sql);
+    }
+
+    public boolean isExitVocabulary(int idHandBook, String jWord){
+        String sql = "SELECT id FROM tblcontenthandbook WHERE idhandbook =" + idHandBook + " AND jword = '" + jWord + "'";
+        Cursor data = GetData(sql);
+        if(data.getCount() > 0){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isExitHandBook(String nameHandBook){
+        String sql = "SELECT id FROM tblhandbook WHERE name = '" + nameHandBook + "'";
+        Cursor data = GetData(sql);
+        System.out.println(sql);
+        System.out.println(data.getCount());
+
+        if(data.getCount() > 0){
+            return true;
+        }
+        return false;
     }
 }

@@ -42,7 +42,9 @@ public class Handbook extends Fragment {
         listView = (SwipeMenuListView) view.findViewById(R.id.listView);
         listHandBook = new ArrayList<HandBook>();
         databaseManager = new DatabaseManager(getContext());
+        databaseManager.createTable();
         loadData();
+
         adapter = new HandBookAdapter(getActivity(),R.layout.row_handbook,listHandBook);
         listView.setAdapter(adapter);
         SwipeMenuCreator creator = new SwipeMenuCreator() {
@@ -105,9 +107,6 @@ public class Handbook extends Fragment {
         return view;
     }
     public void loadData(){
-//        databaseManager.insertRowHandBook("Chu de 1", "27/12/2020");
-//        databaseManager.insertRowHandBook("Chu de 2", "27/12/2020");
-//        databaseManager.insertRowHandBook("Chu de 3", "27/12/2020");
         listHandBook = databaseManager.getDataHandBook();
     }
     public void showContentHandBook(int idHandBook){
@@ -132,7 +131,8 @@ public class Handbook extends Fragment {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         String newName = input.getText().toString().trim();
-                        if (newName.length() != 0 && !newName.equals(name)) {
+
+                        if (newName.length() != 0 && !newName.equals(name) && !databaseManager.isExitHandBook(newName)) {
                             databaseManager.updateRowHandBook(id,newName);
                             listHandBook = databaseManager.getDataHandBook();
                             adapter = new HandBookAdapter(getActivity(),R.layout.row_handbook,listHandBook);

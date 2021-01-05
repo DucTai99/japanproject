@@ -6,36 +6,8 @@
     android:layout_height="match_parent"
     android:stretchColumns="1"
     tools:context=".ContentHandbook">
-        <TableRow
-            android:id="@+id/tableRowId"
-            android:background="@drawable/cell_shape"
-            android:padding="10dp">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/iconObject"
-                android:layout_width="50dp"
-                android:layout_height="30dp"
-                android:src="@drawable/basic"></de.hdodenhof.circleimageview.CircleImageView>
-
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_marginLeft="5dp"
-                android:text="Vi du"
-                android:textColor="@color/black"
-                android:textSize="24sp"
-                android:textStyle="bold"></TextView>
-
-            <TextView
-                android:id="@+id/dateCreate"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:text="27/12/2020"
-                android:paddingRight="20dip"
-                android:paddingTop="15dip"
-                android:layout_gravity="right"
-                android:textColor="@color/black"
-                android:textSize="12sp" />
-        </TableRow>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_contenthandbook"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></androidx.recyclerview.widget.RecyclerView>
 </TableLayout>

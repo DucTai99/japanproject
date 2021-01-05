@@ -14,6 +14,11 @@ public class ObjectGeneral implements Serializable {
         this.content = content;
         this.srcImg = "";
     }
+    // using for vocabulary
+    public ObjectGeneral(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
     public ObjectGeneral(int id, String name, String content, String srcImg) {
         this.id = id;

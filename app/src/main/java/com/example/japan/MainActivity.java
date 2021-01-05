@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.japan.databse.DatabaseManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -21,11 +22,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+//        deleteDatabase("handbook");
         bottomNavigationView = findViewById(R.id.bottomNavigationNavigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
-        if (savedInstanceState == null) {
+        if(savedInstanceState == null){
             Fragment fragment_Default = new Home();
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment_Default).commit();
+        }
+        Intent intent = getIntent();
+        if(intent != null) {
+            int change = intent.getIntExtra("changeVocabulary",-1);
+            if(change==2){
+                Fragment fragment_Default = new Vocabulary();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment_Default).commit();
+                bottomNavigationView.setSelectedItemId(R.id.vocabulary);
+            }
         }
     }
 

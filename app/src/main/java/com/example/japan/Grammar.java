@@ -36,7 +36,7 @@ public class Grammar extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_grammar, container, false);
-        listView = (ListView) view.findViewById(R.id.listView);
+        listView = (ListView) view.findViewById(R.id.fragment_handleHandbook);
         getDataAndCreateView(url);
         return view;
     }

@@ -5,17 +5,27 @@ public class VocabularyHandBook {
     private String jWord;
     private String vnWord;
     private String type;
+    private String imgWord;
     private String dateCreate;
     private int idHandBook;
 
     public VocabularyHandBook() {
     }
 
-    public VocabularyHandBook(int id, String jWord, String vnWord, String type, String dateCreate,int idHandBook) {
+    public String getImgWord() {
+        return imgWord;
+    }
+
+    public void setImgWord(String imgWord) {
+        this.imgWord = imgWord;
+    }
+
+    public VocabularyHandBook(int id, String jWord, String vnWord, String type, String imgWord, String dateCreate, int idHandBook) {
         this.id = id;
         this.jWord = jWord;
         this.vnWord = vnWord;
         this.type = type;
+        this.imgWord = imgWord;
         this.dateCreate = dateCreate;
         this.idHandBook = idHandBook;
     }
@@ -66,5 +76,18 @@ public class VocabularyHandBook {
 
     public void setDateCreate(String dateCreate) {
         this.dateCreate = dateCreate;
+    }
+
+    @Override
+    public String toString() {
+        return "VocabularyHandBook{" +
+                "id=" + id +
+                ", jWord='" + jWord + '\'' +
+                ", vnWord='" + vnWord + '\'' +
+                ", type='" + type + '\'' +
+                ", imgWord='" + imgWord + '\'' +
+                ", dateCreate='" + dateCreate + '\'' +
+                ", idHandBook=" + idHandBook +
+                '}';
     }
 }
