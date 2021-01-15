@@ -1,11 +1,14 @@
 package com.example.japan;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +29,7 @@ import java.util.Random;
 
 public class fragment_home_learn_op1 extends Fragment {
     TextView txtQuestion;
+    SpannableString spannableString;
     Button btnCheck;
     ProgressBar progressBar;
     ImageView imgQuestion1,imgQuestion2,imgQuestion3,imgQuestion4;
@@ -35,10 +39,14 @@ public class fragment_home_learn_op1 extends Fragment {
     ArrayList<CardView> listCardView;
     int viTri, idQuestion,resultFromUser = -1,old = -1;
     View view;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home_learn_op1, container, false);
+
+
+
         anhXa();
         listCardView = new ArrayList<CardView>();
         listCardView.add(answer1);
@@ -51,13 +59,16 @@ public class fragment_home_learn_op1 extends Fragment {
         listImageView.add(imgQuestion3);
         listImageView.add(imgQuestion4);
         loadData();
+
         Random random = new Random();
         viTri = random.nextInt(3);
         Bundle bundle = getArguments();
         if(bundle != null){
             idQuestion = bundle.getInt("idWord");
             String jWord = bundle.getString("jWord");
-            txtQuestion.setText(jWord);
+            spannableString = new SpannableString(jWord);
+            spannableString.setSpan(new UnderlineSpan(),0,spannableString.length(),0);
+            txtQuestion.setText(spannableString);
             String imgWord = bundle.getString("imgWord");
             int img = getContext().getResources().getIdentifier("drawable/"+imgWord, null, getContext().getPackageName());
             listImageView.get(viTri).setImageResource(img);

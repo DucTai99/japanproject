@@ -6,15 +6,18 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -26,8 +29,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.japan.adapter.CourseAdapter;
-import com.example.japan.model.ObjectGeneral;
 import com.example.japan.model.QuestionCourse;
 
 import org.json.JSONArray;
@@ -45,23 +46,42 @@ public class Course extends AppCompatActivity {
     ProgressBar progressBar;
     QuestionCourse questionCourse;
     ArrayList<String> allWord;
-
+    String nameCourse ="";
+    ActionBar actionBar ;
+    TextView titleToolbar;
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course);
         progressBar = findViewById(R.id.progressBar52);
-        progressBar.setProgressTintList(ColorStateList.valueOf(Color.rgb(40,140,228)));
+        progressBar.setProgressTintList(ColorStateList.valueOf(Color.rgb(137,226,25)));
         progressBar.setScaleY(2f);
+
+        actionBar = getSupportActionBar();
+        actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.backgroundOp1)));
+        actionBar.setDisplayShowHomeEnabled(false);
+        actionBar.setDisplayShowTitleEnabled(false);
+
+        LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = layoutInflater.inflate(R.layout.toolbar_title_course, null);
+        titleToolbar = v.findViewById(R.id.title_toolbar_course);
+        actionBar.setCustomView(v);
+
+
         Intent intent = getIntent();
         if(intent != null){
             idCourse = intent.getIntExtra("idCourse",0);
+            nameCourse = intent.getStringExtra("nameCourse");
+            titleToolbar.setText(nameCourse);
             url += idCourse;
             if(savedInstanceState == null) {
                 getData(url);
             }
         }
+        actionBar.setDisplayShowCustomEnabled(true);
+
+
     }
 
     private void getData(String url){

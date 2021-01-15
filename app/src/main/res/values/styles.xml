@@ -11,4 +11,5 @@
         <item name="android:windowBackground">@drawable/theme_dialog_start_course</item>
     </style>
 
+
 </resources>

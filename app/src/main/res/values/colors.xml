@@ -15,5 +15,9 @@
     <color name="colorAccent">#03DAC5</color>
     <color name="colorBackgroundCard">#F0F0F0</color>
     <color name="viewBackground">#6B969696</color>
+    <color name="newWord">#EC27B1</color>
+    <color name="colorProgressbar">#89E219</color>
+
+    <color name="backgroundOp1">#141f23</color>
 
 </resources>

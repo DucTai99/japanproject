@@ -43,6 +43,7 @@ public class Vocabulary extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getActivity(), Lesson.class);
                 intent.putExtra("idVocabularyCourse",listVocabulary.get(i).getId());
+                intent.putExtra("nameLesson",listVocabulary.get(i).getName());
                 startActivity(intent);
             }
         });

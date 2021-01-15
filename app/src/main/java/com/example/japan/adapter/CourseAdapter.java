@@ -48,7 +48,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseViewHolder> {
         holder.mCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDialog(list.get(position).getName(),list.get(position).getId());
+                showDialog(list.get(position).getName(),list.get(position).getId(),list.get(position).getName());
             }
         });
     }
@@ -58,23 +58,32 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseViewHolder> {
         return list.size();
     }
 
-    public void showDialog(String title, int id) {
+    public void showDialog(String title, int id, String nameCourse) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
         builder.setTitle(title);
         builder.setNegativeButton("BẮT ĐẦU", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(context, SplashScreenStartCourse.class);
                 intent.putExtra("idCourse",id);
+                intent.putExtra("nameCourse",nameCourse);
                 context.startActivity(intent);
             }
         });
 
 
         AlertDialog alertDialog = builder.create();
+        View viewDialog = alertDialog.getLayoutInflater().inflate(R.layout.custom_view_dialog,null);
+        TextView titleDialog = viewDialog.findViewById(R.id.title_Dialog);
+        titleDialog.setText(title);
         alertDialog.getWindow().setBackgroundDrawableResource(R.color.white);
+        alertDialog.setCustomTitle(viewDialog);
+
         alertDialog.show();
-        alertDialog.getWindow().setLayout(500,200);
+        alertDialog.getWindow().setLayout(650,320);
+
+
         //
         Button button = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
         button.setMinWidth(500);

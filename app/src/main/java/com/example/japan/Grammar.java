@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
 
 import com.android.volley.Request;
@@ -35,15 +36,18 @@ public class Grammar extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
         View view = inflater.inflate(R.layout.fragment_grammar, container, false);
         listView = (ListView) view.findViewById(R.id.fragment_handleHandbook);
         getDataAndCreateView(url);
         return view;
     }
 
-    public void showContentGrammar(String url){
+    public void showContentGrammar(String url,String name){
         Intent intent = new Intent(getActivity(),ContentGrammar.class);
         intent.putExtra("urlGrammar",url);
+        intent.putExtra("nameGrammar",name);
         startActivity(intent);
     }
 
@@ -69,7 +73,7 @@ public class Grammar extends Fragment{
                         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                showContentGrammar(listGrammar.get(i).getContent());
+                                showContentGrammar(listGrammar.get(i).getContent(),listGrammar.get(i).getName());
                             }
                         });
                     }

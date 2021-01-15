@@ -1,6 +1,7 @@
 package com.example.japan;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -41,12 +42,15 @@ public class Lesson extends AppCompatActivity  {
     private String url ="https://apijapanese.herokuapp.com/api/vocabulary";
     public Button btn_addHandBook;
     private int idVocabularyCourse;
+    private  String nameLesson="";
+    ActionBar actionBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lesson);
 
 
+        actionBar = getSupportActionBar();
         lessonRecycler = findViewById(R.id.recycler_lesson);
         lessonRecycler.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -57,6 +61,8 @@ public class Lesson extends AppCompatActivity  {
         Intent intent = getIntent();
         if(intent != null) {
             idVocabularyCourse = intent.getIntExtra("idVocabularyCourse",0);
+            nameLesson = intent.getStringExtra("nameLesson");
+            actionBar.setTitle(nameLesson);
             url += "/"+idVocabularyCourse;
             if(savedInstanceState == null) {
                 getData(url);

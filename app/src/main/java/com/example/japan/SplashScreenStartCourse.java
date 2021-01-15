@@ -19,6 +19,7 @@ public class SplashScreenStartCourse extends AppCompatActivity {
     TextView maxim_Content;
     ImageView iconView;
     int idCourse = 0;
+    String nameCourse = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,12 +33,14 @@ public class SplashScreenStartCourse extends AppCompatActivity {
         Intent intent = getIntent();
         if(intent != null){
             idCourse = intent.getIntExtra("idCourse",0);
+            nameCourse = intent.getStringExtra("nameCourse");
         }
         final Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 Intent intent = new Intent(SplashScreenStartCourse.this, Course.class);
                 intent.putExtra("idCourse",idCourse);
+                intent.putExtra("nameCourse",nameCourse);
                 startActivity(intent);
                 finish();
             }
@@ -52,7 +55,7 @@ public class SplashScreenStartCourse extends AppCompatActivity {
         Random random;
 
         String tmp1 = getResources().getString(R.string.maxim1);
-        String tmp2 = getResources().getString(R.string.maxim2);
+        String tmp2 =getResources().getString(R.string.maxim2);
         String tmp3 = getResources().getString(R.string.maxim3);
         String tmp4 = getResources().getString(R.string.maxim4);
         String tmp5 = getResources().getString(R.string.maxim5);

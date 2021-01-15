@@ -1,5 +1,6 @@
 package com.example.japan;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -36,6 +37,7 @@ public class ContentGrammar extends AppCompatActivity {
     ObjectGeneral objectGeneral;
     String url = "";
     String html = "<p>a</p>";
+    String nameGrammar="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,9 +46,12 @@ public class ContentGrammar extends AppCompatActivity {
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setHorizontalScrollBarEnabled(false);
         webView.setWebViewClient(new WebViewClient());
+
+        ActionBar actionBar = getSupportActionBar();
         Intent intent = getIntent();
         if(intent != null){
             url = intent.getStringExtra("urlGrammar");
+            nameGrammar = intent.getStringExtra("nameGrammar");
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -67,5 +72,6 @@ public class ContentGrammar extends AppCompatActivity {
                 }
             }).start();
         }
+        actionBar.setTitle(nameGrammar);
     }
 }
