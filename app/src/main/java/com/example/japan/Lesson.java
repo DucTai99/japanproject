@@ -28,12 +28,14 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.japan.adapter.LessonAdapter;
+import com.example.japan.model.AudioStorage;
 import com.example.japan.model.WordModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 
 public class Lesson extends AppCompatActivity  {
@@ -44,6 +46,8 @@ public class Lesson extends AppCompatActivity  {
     private int idVocabularyCourse;
     private  String nameLesson="";
     ActionBar actionBar;
+    ArrayList<String> listAudioLink;
+    AudioStorage audioStorage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,15 +59,19 @@ public class Lesson extends AppCompatActivity  {
         lessonRecycler.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         lessonRecycler.setLayoutManager(layoutManager);
-
+        audioStorage = new AudioStorage();
+       listAudioLink = new ArrayList<>();
 
 
         Intent intent = getIntent();
         if(intent != null) {
             idVocabularyCourse = intent.getIntExtra("idVocabularyCourse",0);
+            System.out.println(idVocabularyCourse+"idCourse");
             nameLesson = intent.getStringExtra("nameLesson");
             actionBar.setTitle(nameLesson);
             url += "/"+idVocabularyCourse;
+            listAudioLink.addAll(audioStorage.getListAudioByIdLesson(idVocabularyCourse));
+            System.out.println(listAudioLink.size()+"SIze");
             if(savedInstanceState == null) {
                 getData(url);
             }
@@ -103,6 +111,9 @@ public class Lesson extends AppCompatActivity  {
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
+    }
+    public ArrayList<String> getAllAudioLink() {
+        return listAudioLink;
     }
 
     public void changeFragment(String jWord, String vnWord, String imgWord, String type){
@@ -160,15 +171,7 @@ public class Lesson extends AppCompatActivity  {
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("changeVocabulary",2);
         startActivity(intent);
-//        getFragmentManager().popBackStack();
-//        Fragment fragment = new Vocabulary();
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-////        Fragment fragment2 = fragmentManager.findFragmentById(R.id.frame_course);
-////        fragmentTransaction.remove(fragment2);
-//        fragmentTransaction.replace(R.id.fragment_container, fragment);
-//        fragmentTransaction.commit();
-        //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Vocabulary()).commit();
+
     }
 
 }

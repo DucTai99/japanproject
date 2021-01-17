@@ -1,5 +1,6 @@
 package com.example.japan.adapter;
 
+import android.media.MediaPlayer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +16,16 @@ import com.example.japan.Lesson;
 import com.example.japan.R;
 import com.example.japan.model.WordModel;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.ViewHolder> {
 
     private ArrayList<WordModel> listData;
     Lesson context;
+    ArrayList<String> url;
+    MediaPlayer mediaPlayer;
+
 
 
     public LessonAdapter(ArrayList<WordModel> listData, Lesson context) {
@@ -37,16 +42,18 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.ViewHolder
         ViewHolder viewHolder = new ViewHolder(view);
 
 
+
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull LessonAdapter.ViewHolder holder, int position) {
         WordModel oneWord = listData.get(position);
+        url = new ArrayList<>();
+        url.addAll(context.getAllAudioLink());
         holder.textPageNumber.setText((position + 1) + "/" + listData.size());
         holder.txtWord.setText(oneWord.getjWord());
         holder.txtMeanWord.setText(oneWord.getVnWord());
-
         holder.btn_addHandBook.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -56,6 +63,26 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.ViewHolder
             String imgWord = listData.get(position).getImgWord();
             context.changeFragment(jWord,vnWord,imgWord,type);
         }
+        });
+
+
+
+
+        holder.btn_speaker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mediaPlayer = new MediaPlayer();
+                int indexAudio =  position;
+                String urlAudio = url.get(indexAudio).toString();
+                try {
+                    mediaPlayer.setDataSource(urlAudio);
+                    mediaPlayer.prepare();
+                    mediaPlayer.start();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         });
 
 
