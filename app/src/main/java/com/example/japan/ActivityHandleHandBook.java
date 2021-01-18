@@ -36,7 +36,7 @@ public class ActivityHandleHandBook extends AppCompatActivity {
     HandBookAdapter adapter;
     List<HandBook> listHandBook;
     DatabaseManager databaseManager;
-    String jWord,vnWord,imgWord,type;
+    String jWord,vnWord,imgWord,type, urlAudio;
     private int idVocabularyCourse;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +59,7 @@ public class ActivityHandleHandBook extends AppCompatActivity {
             imgWord = intent.getStringExtra("imgWord");
             type = intent.getStringExtra("type");
             idVocabularyCourse = intent.getIntExtra("idVocabularyCourse",0);
-
+            urlAudio = intent.getStringExtra("urlAudio");
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -70,7 +70,7 @@ public class ActivityHandleHandBook extends AppCompatActivity {
                         Toast.makeText(ActivityHandleHandBook.this,"Từ này đã có trong danh sách",Toast.LENGTH_SHORT).show();
                     }
                     else{
-                        databaseManager.insertRowContentHandBook(jWord,vnWord,imgWord,type,currentDate,idHandBook);
+                        databaseManager.insertRowContentHandBook(jWord,vnWord,imgWord,type,currentDate,urlAudio,idHandBook);
                         Toast.makeText(ActivityHandleHandBook.this,"Thêm thành công",Toast.LENGTH_SHORT).show();
                     }
                     Intent intent = new Intent(ActivityHandleHandBook.this, Lesson.class);
@@ -145,7 +145,7 @@ public class ActivityHandleHandBook extends AppCompatActivity {
                         databaseManager.insertRowHandBook(nameHandBook,currentDate);
                         loadData();
                         int id = listHandBook.get(listHandBook.size()-1).getId();
-                        databaseManager.insertRowContentHandBook(jWord,vnWord,imgWord,type,currentDate,id);
+                        databaseManager.insertRowContentHandBook(jWord,vnWord,imgWord,type,currentDate,urlAudio,id);
                         Toast.makeText(ActivityHandleHandBook.this,"Thêm thành công",Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(ActivityHandleHandBook.this, Lesson.class);
                         intent.putExtra("idVocabularyCourse",idVocabularyCourse);

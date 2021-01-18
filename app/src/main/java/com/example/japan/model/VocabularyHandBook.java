@@ -7,6 +7,7 @@ public class VocabularyHandBook {
     private String type;
     private String imgWord;
     private String dateCreate;
+    private String urlAudio;
     private int idHandBook;
 
     public VocabularyHandBook() {
@@ -20,13 +21,22 @@ public class VocabularyHandBook {
         this.imgWord = imgWord;
     }
 
-    public VocabularyHandBook(int id, String jWord, String vnWord, String type, String imgWord, String dateCreate, int idHandBook) {
+    public String getUrlAudio() {
+        return urlAudio;
+    }
+
+    public void setUrlAudio(String urlAudio) {
+        this.urlAudio = urlAudio;
+    }
+
+    public VocabularyHandBook(int id, String jWord, String vnWord, String type, String imgWord, String dateCreate, String urlAudio, int idHandBook) {
         this.id = id;
         this.jWord = jWord;
         this.vnWord = vnWord;
         this.type = type;
         this.imgWord = imgWord;
         this.dateCreate = dateCreate;
+        this.urlAudio = urlAudio;
         this.idHandBook = idHandBook;
     }
 

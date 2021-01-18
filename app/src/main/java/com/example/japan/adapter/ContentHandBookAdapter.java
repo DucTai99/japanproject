@@ -1,5 +1,6 @@
 package com.example.japan.adapter;
 
+import android.media.MediaPlayer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +18,14 @@ import com.example.japan.R;
 import com.example.japan.model.VocabularyHandBook;
 import com.example.japan.model.WordModel;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class ContentHandBookAdapter extends RecyclerView.Adapter<ContentHandBookAdapter.ViewHolder> {
 
     private ArrayList<VocabularyHandBook> listData;
     ContentHandbook context;
+    MediaPlayer mediaPlayer;
 
     public ContentHandBookAdapter(ArrayList<VocabularyHandBook> listData, ContentHandbook context) {
         this.listData = listData;
@@ -44,6 +47,21 @@ public class ContentHandBookAdapter extends RecyclerView.Adapter<ContentHandBook
         holder.textPageNumber.setText((position + 1) + "/" + listData.size());
         holder.txtWord.setText(vocabularyHandBook.getjWord());
         holder.txtMeanWord.setText(vocabularyHandBook.getVnWord());
+
+        holder.btn_speaker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mediaPlayer = new MediaPlayer();
+                String urlAudio =vocabularyHandBook.getUrlAudio();
+                try {
+                    mediaPlayer.setDataSource(urlAudio);
+                    mediaPlayer.prepare();
+                    mediaPlayer.start();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     @Override

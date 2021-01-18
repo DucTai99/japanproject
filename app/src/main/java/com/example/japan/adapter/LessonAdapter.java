@@ -25,6 +25,7 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.ViewHolder
     Lesson context;
     ArrayList<String> url;
     MediaPlayer mediaPlayer;
+    String urlDefault ="https://firebasestorage.googleapis.com/v0/b/testaudio-b6a62.appspot.com/o/audioDefault.mp3?alt=media&token=48fe5a3d-adfb-4f29-b86a-fdb46f9f9a1a";
 
 
 
@@ -57,11 +58,18 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.ViewHolder
         holder.btn_addHandBook.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            String urlAudio = "";
+            if(position >= url.size()) {
+                urlAudio = urlDefault;
+            }else {
+                urlAudio = url.get(position).toString();
+            }
             String jWord = listData.get(position).getjWord();
             String vnWord = listData.get(position).getVnWord();
             String type = listData.get(position).getType();
             String imgWord = listData.get(position).getImgWord();
-            context.changeFragment(jWord,vnWord,imgWord,type);
+
+            context.changeFragment(jWord,vnWord,imgWord,type,urlAudio);
         }
         });
 
@@ -73,7 +81,13 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.ViewHolder
             public void onClick(View v) {
                 mediaPlayer = new MediaPlayer();
                 int indexAudio =  position;
-                String urlAudio = url.get(indexAudio).toString();
+                String urlAudio;
+                if(indexAudio >= url.size()) {
+                    urlAudio = urlDefault;
+                }else {
+                    urlAudio = url.get(indexAudio).toString();
+                }
+
                 try {
                     mediaPlayer.setDataSource(urlAudio);
                     mediaPlayer.prepare();

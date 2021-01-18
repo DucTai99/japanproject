@@ -116,14 +116,14 @@ public class Lesson extends AppCompatActivity  {
         return listAudioLink;
     }
 
-    public void changeFragment(String jWord, String vnWord, String imgWord, String type){
+    public void changeFragment(String jWord, String vnWord, String imgWord, String type,String urlAudio){
         Intent intent = new Intent(Lesson.this,ActivityHandleHandBook.class);
         intent.putExtra("jWord",jWord);
         intent.putExtra("vnWord",vnWord);
         intent.putExtra("imgWord",imgWord);
         intent.putExtra("type",type);
         intent.putExtra("idVocabularyCourse",idVocabularyCourse);
-
+        intent.putExtra("urlAudio",urlAudio);
         startActivity(intent);
 
     }
