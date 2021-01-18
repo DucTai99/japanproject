@@ -1,4 +1,4 @@
-package com.example.japan;
+ package com.example.japan;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
