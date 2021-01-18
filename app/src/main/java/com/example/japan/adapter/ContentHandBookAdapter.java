@@ -49,6 +49,8 @@ public class ContentHandBookAdapter extends RecyclerView.Adapter<ContentHandBook
         VocabularyHandBook vocabularyHandBook = listData.get(position);
         url = new ArrayList<>();
         url.addAll(context.getAllAudioLink());
+
+        System.out.println(url.size()+"Size");
         String image = vocabularyHandBook.getImgWord();
         if(image.contains("https://firebasestorage.googleapis.com")){
             Picasso.get().load(image).into(holder.imgViewWord);
@@ -66,6 +68,7 @@ public class ContentHandBookAdapter extends RecyclerView.Adapter<ContentHandBook
             public void onClick(View v) {
                 mediaPlayer = new MediaPlayer();
                 int indexAudio =  position;
+                System.out.println(indexAudio+"index");
                 String urlAudio;
                 if(indexAudio >= url.size()) {
                     urlAudio = urlDefault;

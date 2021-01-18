@@ -8,14 +8,17 @@
         android:title="" />
     <item
         android:id="@+id/grammar"
-        android:icon="@drawable/ic_grade"
+        android:icon="@drawable/grammar_icon"
+        android:iconTint="@color/colorProgressbar"
         android:title="" />
     <item
         android:id="@+id/vocabulary"
-        android:icon="@drawable/ic_favorite_24"
+        android:icon="@drawable/vocabulary_icon"
+        android:iconTint="@color/colorProgressbar"
         android:title="" />
     <item
         android:id="@+id/handbook"
         android:icon="@drawable/ic_book"
+        android:iconTint="@color/colorProgressbar"
         android:title="" />
 </menu>

@@ -5,11 +5,15 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     String titleActionbar = "";
     ActionBar actionBar;
     TextView titleToolbar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +43,20 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setCustomView(v);
         actionBar.setDisplayShowCustomEnabled(true);
 
+        ColorStateList listColor = new ColorStateList(
+                new int[][] {
+                        new int[] {-android.R.attr.state_checked}, // unchecked
+                        new int[] { android.R.attr.state_checked}  // checked
+                },
+                new int[] {
+                        Color.WHITE,
+                        Color.GREEN
+                }
+        );
 
         bottomNavigationView = findViewById(R.id.bottomNavigationNavigation);
+        bottomNavigationView.setItemIconSize(80);
+        bottomNavigationView.setItemIconTintList(listColor);
         bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
         if (savedInstanceState == null) {
             titleActionbar ="Home";
@@ -74,35 +91,48 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+
     private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
             Fragment fragment = new Home();
             int id = menuItem.getItemId();
+
+
+
             switch (id) {
                 case R.id.homePage:
                     fragment = new Home();
                     titleActionbar ="Home";
                     titleToolbar.setText(titleActionbar);
+
+
+
                     break;
                 case R.id.handbook:
                     fragment = new Handbook();
                     titleActionbar ="Handbook";
                     titleToolbar.setText(titleActionbar);
+
                     break;
                 case R.id.grammar:
                     fragment = new Grammar();
                     titleActionbar ="Grammar";
                     titleToolbar.setText(titleActionbar);
+
                     break;
                 case R.id.vocabulary:
                     fragment = new Vocabulary();
                     titleActionbar ="Vocabulary";
                     titleToolbar.setText(titleActionbar);
+
                     break;
             }
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
             return true;
         }
+
     };
+
 }

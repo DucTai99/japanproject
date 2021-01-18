@@ -198,7 +198,7 @@ public class Course extends AppCompatActivity {
         }
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
-        alertDialog.getWindow().setLayout(300,250);
+        alertDialog.getWindow().setLayout(400,320);
         final Runnable runnable = new Runnable() {
             @Override
             public void run() {
