@@ -17,6 +17,7 @@ import com.example.japan.Lesson;
 import com.example.japan.R;
 import com.example.japan.model.VocabularyHandBook;
 import com.example.japan.model.WordModel;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,6 +27,8 @@ public class ContentHandBookAdapter extends RecyclerView.Adapter<ContentHandBook
     private ArrayList<VocabularyHandBook> listData;
     ContentHandbook context;
     MediaPlayer mediaPlayer;
+    ArrayList<String> url;
+    String urlDefault ="https://firebasestorage.googleapis.com/v0/b/testaudio-b6a62.appspot.com/o/audioDefault.mp3?alt=media&token=48fe5a3d-adfb-4f29-b86a-fdb46f9f9a1a";
 
     public ContentHandBookAdapter(ArrayList<VocabularyHandBook> listData, ContentHandbook context) {
         this.listData = listData;
@@ -44,6 +47,16 @@ public class ContentHandBookAdapter extends RecyclerView.Adapter<ContentHandBook
     @Override
     public void onBindViewHolder(@NonNull ContentHandBookAdapter.ViewHolder holder, int position) {
         VocabularyHandBook vocabularyHandBook = listData.get(position);
+        url = new ArrayList<>();
+        url.addAll(context.getAllAudioLink());
+        String image = vocabularyHandBook.getImgWord();
+        if(image.contains("https://firebasestorage.googleapis.com")){
+            Picasso.get().load(image).into(holder.imgViewWord);
+        }
+        else {
+            int img = context.getResources().getIdentifier("drawable/"+image, null, context.getPackageName());
+            holder.imgViewWord.setImageResource(img);
+        }
         holder.textPageNumber.setText((position + 1) + "/" + listData.size());
         holder.txtWord.setText(vocabularyHandBook.getjWord());
         holder.txtMeanWord.setText(vocabularyHandBook.getVnWord());
@@ -52,11 +65,19 @@ public class ContentHandBookAdapter extends RecyclerView.Adapter<ContentHandBook
             @Override
             public void onClick(View v) {
                 mediaPlayer = new MediaPlayer();
-                String urlAudio =vocabularyHandBook.getUrlAudio();
+                int indexAudio =  position;
+                String urlAudio;
+                if(indexAudio >= url.size()) {
+                    urlAudio = urlDefault;
+                }else {
+                    urlAudio = url.get(indexAudio).toString();
+                }
+
                 try {
                     mediaPlayer.setDataSource(urlAudio);
                     mediaPlayer.prepare();
                     mediaPlayer.start();
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

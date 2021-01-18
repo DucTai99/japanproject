@@ -23,6 +23,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.japan.model.QuestionCourse;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -44,9 +45,6 @@ public class fragment_home_learn_op1 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home_learn_op1, container, false);
-
-
-
         anhXa();
         listCardView = new ArrayList<CardView>();
         listCardView.add(answer1);
@@ -70,12 +68,18 @@ public class fragment_home_learn_op1 extends Fragment {
             spannableString.setSpan(new UnderlineSpan(),0,spannableString.length(),0);
             txtQuestion.setText(spannableString);
             String imgWord = bundle.getString("imgWord");
-            int img = getContext().getResources().getIdentifier("drawable/"+imgWord, null, getContext().getPackageName());
-            listImageView.get(viTri).setImageResource(img);
-            for (int i = 0 ; i < listImg.size();i++){
-                if(listImg.get(i) == img){
-                    listImg.remove(i);
-                    break;
+
+            if(imgWord.contains("https://firebasestorage.googleapis.com")){
+                Picasso.get().load(imgWord).into(listImageView.get(viTri));
+            }
+            else {
+                int img = getContext().getResources().getIdentifier("drawable/"+imgWord, null, getContext().getPackageName());
+                listImageView.get(viTri).setImageResource(img);
+                for (int i = 0 ; i < listImg.size();i++){
+                    if(listImg.get(i) == img){
+                        listImg.remove(i);
+                        break;
+                    }
                 }
             }
             for(int i = 0;i<listImageView.size();i++){

@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.japan.Lesson;
 import com.example.japan.R;
 import com.example.japan.model.WordModel;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -52,6 +53,14 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.ViewHolder
         WordModel oneWord = listData.get(position);
         url = new ArrayList<>();
         url.addAll(context.getAllAudioLink());
+        String img = oneWord.getImgWord();
+        if(img.contains("https://firebasestorage.googleapis.com")){
+            Picasso.get().load(img).into(holder.imgViewWord);
+        }
+        else {
+            int image = context.getResources().getIdentifier("drawable/"+img, null, context.getPackageName());
+            holder.imgViewWord.setImageResource(image);
+        }
         holder.textPageNumber.setText((position + 1) + "/" + listData.size());
         holder.txtWord.setText(oneWord.getjWord());
         holder.txtMeanWord.setText(oneWord.getVnWord());
@@ -124,14 +133,9 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.ViewHolder
             txtWord = itemView.findViewById(R.id.idWord);
             txtMeanWord = itemView.findViewById(R.id.meanWord);
             textPageNumber = itemView.findViewById(R.id.pageNumberWord);
-//            imgViewWord = itemView.findViewById(R.id.imgWord);
+            imgViewWord = itemView.findViewById(R.id.imgWord);
             btn_addHandBook = itemView.findViewById(R.id.addHandBook);
             btn_speaker = itemView.findViewById(R.id.speaker);
-
-
         }
-
-
     }
-
 }

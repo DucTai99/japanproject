@@ -19,6 +19,7 @@ import com.example.japan.Grammar;
 import com.example.japan.R;
 import com.example.japan.SplashScreenStartCourse;
 import com.example.japan.model.ObjectGeneral;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -42,8 +43,14 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull CourseViewHolder holder, int position) {
-        int img = context.getResources().getIdentifier("drawable/"+list.get(position).getSrcImg(), null, context.getPackageName());
-        holder.imageView.setImageResource(img);
+        String image = list.get(position).getSrcImg();
+        if(image.contains("https://firebasestorage.googleapis.com")){
+            Picasso.get().load(image).into(holder.imageView);
+        }
+        else {
+            int img = context.getResources().getIdentifier("drawable/"+list.get(position).getSrcImg(), null, context.getPackageName());
+            holder.imageView.setImageResource(img);
+        }
         holder.textView.setText(list.get(position).getName());
         holder.mCardView.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -66,6 +66,7 @@ public class HandBookAdapter extends BaseAdapter {
             holder = (HandBookAdapter.ViewHolder) view.getTag();
         }
         final HandBook handBook = list.get(i);
+//        String image = handBook.get
         holder.textRow.setText(handBook.getName());
         holder.dateRow.setText(handBook.getDataCreate());
 //        holder.tableRow.setOnClickListener(new View.OnClickListener() {

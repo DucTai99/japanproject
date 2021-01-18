@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import com.example.japan.adapter.ContentHandBookAdapter;
 import com.example.japan.adapter.LessonAdapter;
 import com.example.japan.databse.DatabaseManager;
+import com.example.japan.model.AudioStorage;
 import com.example.japan.model.VocabularyHandBook;
 
 import java.util.ArrayList;
@@ -26,6 +27,9 @@ public class ContentHandbook extends AppCompatActivity {
     ArrayList<VocabularyHandBook> vocabularyHandBooks;
     private RecyclerView contentHandbookRecycler;
     private ContentHandBookAdapter contentHandBookAdapter;
+    AudioStorage audioStorage;
+    ArrayList<String> listAudioLink;
+    private int idVocabularyCourse;
     int idHandBook;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +40,14 @@ public class ContentHandbook extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         contentHandbookRecycler.setLayoutManager(layoutManager);
         databaseManager = new DatabaseManager(this);
+        audioStorage = new AudioStorage();
+        listAudioLink = new ArrayList<>();
         Intent intent = getIntent();
         if(intent != null){
             idHandBook = intent.getIntExtra("idHandBook",-1);
+//            idVocabularyCourse = intent.getIntExtra("idVocabularyCourse",0);
             loadData();
+//            listAudioLink.addAll(audioStorage.getListAudioByIdLesson(idVocabularyCourse));
             contentHandBookAdapter = new ContentHandBookAdapter(vocabularyHandBooks,ContentHandbook.this);
             contentHandbookRecycler.setAdapter(contentHandBookAdapter);
         }
@@ -81,5 +89,8 @@ public class ContentHandbook extends AppCompatActivity {
 
     public void loadData(){
         vocabularyHandBooks = databaseManager.getListDataVocabularyByIdHandBook(idHandBook);
+    }
+    public ArrayList<String> getAllAudioLink() {
+        return listAudioLink;
     }
 }
